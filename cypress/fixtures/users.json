@@ -1,0 +1,13 @@
+{
+  "create": {
+    "name": "João Paulo",
+    "job": "QA Engineer"
+  },
+  "updateFull": {
+    "name": "João Paulo Carniel",
+    "job": "Senior QA Engineer"
+  },
+  "updatePartial": {
+    "job": "Lead QA Engineer"
+  }
+}

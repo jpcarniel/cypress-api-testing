@@ -1,0 +1,29 @@
+{
+  "name": "cypress-api-testing",
+  "version": "1.0.0",
+  "description": "API test automation for ReqRes.in using Cypress",
+  "scripts": {
+    "test": "cypress run --browser chrome",
+    "test:open": "cypress open",
+    "test:users": "cypress run --spec cypress/e2e/users.cy.js --browser chrome",
+    "test:auth": "cypress run --spec cypress/e2e/auth.cy.js --browser chrome",
+    "test:resources": "cypress run --spec cypress/e2e/resources.cy.js --browser chrome",
+    "test:edge": "cypress run --spec cypress/e2e/edge-cases.cy.js --browser chrome",
+    "report:merge": "mochawesome-merge cypress/reports/*.json > cypress/reports/merged.json",
+    "report:generate": "marge cypress/reports/merged.json --reportDir cypress/reports --inline",
+    "report": "npm run report:merge && npm run report:generate",
+    "format": "prettier --write .",
+    "format:check": "prettier --check ."
+  },
+  "keywords": [],
+  "author": "João Paulo Carniel Fonseca",
+  "license": "ISC",
+  "type": "commonjs",
+  "devDependencies": {
+    "cypress": "^15.12.0",
+    "mochawesome": "^7.1.4",
+    "mochawesome-merge": "^5.1.1",
+    "mochawesome-report-generator": "^6.3.2",
+    "prettier": "^3.8.1"
+  }
+}
