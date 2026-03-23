@@ -17,6 +17,11 @@ module.exports = defineConfig({
       html: false,
       json: true,
     },
-    setupNodeEvents(on, config) {},
+    setupNodeEvents(on, config) {
+      if (process.env.REQRES_API_KEY) {
+        config.env.API_KEY = process.env.REQRES_API_KEY
+      }
+      return config
+    },
   },
 })
