@@ -1,5 +1,7 @@
 # Cypress API Testing
 
+![CI](https://github.com/jpcarniel/cypress-api-testing/actions/workflows/api-tests.yml/badge.svg)
+
 Automação de testes de API para o [ReqRes.in](https://reqres.in) usando Cypress.
 
 ## O que é testado
@@ -63,3 +65,4 @@ cypress/
 
 - [Plano de Testes](docs/test-plan.md) - escopo, estratégia, ambientes e riscos
 - [Casos de Teste](docs/test-cases.md) - 31 casos de teste documentados com passos e resultados esperados
+- [Bug Reports](docs/bug-reports.md) - 4 bugs identificados na API (validação, status codes, persistência)
