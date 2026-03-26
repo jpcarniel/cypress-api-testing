@@ -2,7 +2,7 @@
 
 ![CI](https://github.com/jpcarniel/cypress-api-testing/actions/workflows/api-tests.yml/badge.svg)
 
-Automação de testes de API para o [ReqRes.in](https://reqres.in) usando Cypress.
+Automação de testes de API para o [ReqRes.in](https://reqres.in) usando Cypress. A ReqRes.in é uma API pública de simulação — ela retorna respostas realistas mas não persiste dados entre requisições.
 
 ## O que é testado
 
