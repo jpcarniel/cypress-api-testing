@@ -114,3 +114,87 @@ O endpoint POST /api/users aceita qualquer tipo de dado nos campos name e job se
 **Ambiente:** ReqRes.in API, Cypress 15.x
 
 **Observação:** A ausência de validação de tipo e sanitização de input pode representar vulnerabilidades de segurança (XSS stored) em APIs reais que persistem dados.
+
+---
+
+## BUG-005: PUT /api/users/{id} aceita atualização de recurso inexistente
+
+**Severidade:** Média
+**Prioridade:** Média
+**Status:** Aberto
+**Caso de teste relacionado:** Edge Cases - Non-existent resources
+
+**Descrição:**
+O endpoint PUT /api/users/{id} retorna status 200 e `updatedAt` ao tentar atualizar um usuário com ID inexistente (ex: 999). A API não verifica se o recurso existe antes de processar a atualização. Em contraste, o endpoint GET /api/users/999 retorna corretamente 404.
+
+**Passos para reproduzir:**
+
+| Passo | Ação | Resultado |
+|-------|------|-----------|
+| 1 | GET /api/users/999 | Status 404, body vazio |
+| 2 | PUT /api/users/999 com `{"name": "Ghost", "job": "None"}` | Status 200, body com updatedAt |
+| 3 | GET /api/users/999 novamente | Status 404, recurso não foi criado |
+
+**Resultado esperado:** Status 404 (Not Found) ao tentar atualizar um recurso que não existe
+
+**Resultado real:** Status 200 com timestamp de atualização, sugerindo que a operação foi bem-sucedida
+
+**Ambiente:** ReqRes.in API, Cypress 15.x
+
+**Observação:** Comportamento inconsistente entre métodos HTTP. GET valida a existência do recurso, PUT não. Em uma API real, isso poderia mascarar erros no frontend que tenta atualizar registros já deletados.
+
+---
+
+## BUG-006: DELETE /api/users/{id} aceita exclusão de recurso inexistente
+
+**Severidade:** Média
+**Prioridade:** Média
+**Status:** Aberto
+**Caso de teste relacionado:** Edge Cases - Non-existent resources
+
+**Descrição:**
+O endpoint DELETE /api/users/{id} retorna status 204 (No Content) para qualquer ID, incluindo IDs que não correspondem a nenhum recurso existente. A API não verifica a existência do recurso antes de retornar sucesso.
+
+**Passos para reproduzir:**
+
+| Passo | Ação | Resultado |
+|-------|------|-----------|
+| 1 | GET /api/users/999 | Status 404, body vazio |
+| 2 | DELETE /api/users/999 | Status 204 |
+| 3 | DELETE /api/users/99999 | Status 204 |
+
+**Resultado esperado:** Status 404 (Not Found) ao tentar deletar um recurso que não existe
+
+**Resultado real:** Status 204, indicando sucesso mesmo sem recurso para deletar
+
+**Ambiente:** ReqRes.in API, Cypress 15.x
+
+**Observação:** Em APIs reais, retornar 204 para IDs inexistentes pode ser uma decisão intencional (idempotência), mas a inconsistência com o GET (que retorna 404) sugere ausência de validação, não uma escolha de design.
+
+---
+
+## BUG-007: API não valida parâmetros de paginação inválidos
+
+**Severidade:** Baixa
+**Prioridade:** Baixa
+**Status:** Aberto
+**Caso de teste relacionado:** Edge Cases - Invalid pagination
+
+**Descrição:**
+O endpoint GET /api/users aceita valores inválidos nos parâmetros de paginação (`page`, `per_page`) sem retornar erro. Números negativos, strings e zero são processados sem validação, retornando status 200.
+
+**Passos para reproduzir:**
+
+| Passo | Ação | Resultado |
+|-------|------|-----------|
+| 1 | GET /api/users?page=-1 | Status 200, retorna dados |
+| 2 | GET /api/users?page=abc | Status 200, retorna dados |
+| 3 | GET /api/users?per_page=0 | Status 200, retorna dados |
+
+**Resultado esperado:** Status 400 com mensagem indicando parâmetros inválidos, ou no mínimo tratamento consistente (ex: default para página 1)
+
+**Resultado real:** Status 200 para todos os cenários, sem indicação de que os parâmetros são inválidos
+
+**Ambiente:** ReqRes.in API, Cypress 15.x
+
+**Observação:** A falta de validação em parâmetros de query pode causar comportamentos inesperados no frontend e dificultar debugging. Em APIs com banco de dados real, valores como `page=-1` podem gerar queries problemáticas.

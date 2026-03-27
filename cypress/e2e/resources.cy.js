@@ -15,12 +15,13 @@ describe('Resources API', () => {
 
     it('Should return resources with expected fields', () => {
       cy.apiGet(endpoints.resources).then((response) => {
-        const resource = response.body.data[0]
-        expect(resource).to.have.property('id')
-        expect(resource).to.have.property('name')
-        expect(resource).to.have.property('year')
-        expect(resource).to.have.property('color')
-        expect(resource).to.have.property('pantone_value')
+        response.body.data.forEach((resource) => {
+          expect(resource).to.have.property('id')
+          expect(resource).to.have.property('name')
+          expect(resource).to.have.property('year')
+          expect(resource).to.have.property('color')
+          expect(resource).to.have.property('pantone_value')
+        })
       })
     })
 

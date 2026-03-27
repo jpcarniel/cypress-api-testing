@@ -75,5 +75,14 @@ describe('Authentication API', () => {
         })
       })
     })
+
+    it('Should return 400 for unregistered email', () => {
+      cy.fixture('auth').then((data) => {
+        cy.apiPost(endpoints.login, data.invalidEmail).then((response) => {
+          expect(response.status).to.equal(400)
+          expect(response.body).to.have.property('error')
+        })
+      })
+    })
   })
 })

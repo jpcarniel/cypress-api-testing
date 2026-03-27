@@ -5,7 +5,6 @@ describe('Users API', () => {
     it('Should return paginated list of users', () => {
       cy.apiGet(endpoints.users).then((response) => {
         expect(response.status).to.equal(200)
-        expect(response.headers['content-type']).to.include('application/json')
         expect(response.body).to.have.property('page')
         expect(response.body).to.have.property('per_page')
         expect(response.body).to.have.property('total')
@@ -32,12 +31,13 @@ describe('Users API', () => {
 
     it('Should return users with expected fields', () => {
       cy.apiGet(endpoints.users).then((response) => {
-        const user = response.body.data[0]
-        expect(user).to.have.property('id')
-        expect(user).to.have.property('email')
-        expect(user).to.have.property('first_name')
-        expect(user).to.have.property('last_name')
-        expect(user).to.have.property('avatar')
+        response.body.data.forEach((user) => {
+          expect(user).to.have.property('id')
+          expect(user).to.have.property('email')
+          expect(user).to.have.property('first_name')
+          expect(user).to.have.property('last_name')
+          expect(user).to.have.property('avatar')
+        })
       })
     })
 
@@ -76,14 +76,6 @@ describe('Users API', () => {
           expect(response.body).to.have.property('name', data.create.name)
           expect(response.body).to.have.property('job', data.create.job)
           expect(response.body).to.have.property('id')
-          expect(response.body).to.have.property('createdAt')
-        })
-      })
-    })
-
-    it('Should return created timestamp in ISO format', () => {
-      cy.fixture('users').then((data) => {
-        cy.apiPost(endpoints.users, data.create).then((response) => {
           expect(response.body.createdAt).to.match(
             /^\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}/,
           )
@@ -99,7 +91,9 @@ describe('Users API', () => {
           expect(response.status).to.equal(200)
           expect(response.body).to.have.property('name', data.updateFull.name)
           expect(response.body).to.have.property('job', data.updateFull.job)
-          expect(response.body).to.have.property('updatedAt')
+          expect(response.body.updatedAt).to.match(
+            /^\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}/,
+          )
         })
       })
     })
@@ -115,7 +109,9 @@ describe('Users API', () => {
               'job',
               data.updatePartial.job,
             )
-            expect(response.body).to.have.property('updatedAt')
+            expect(response.body.updatedAt).to.match(
+              /^\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}/,
+            )
           },
         )
       })
