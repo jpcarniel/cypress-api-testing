@@ -65,4 +65,4 @@ cypress/
 
 - [Plano de Testes](docs/test-plan.md) - escopo, estratégia, ambientes e riscos
 - [Casos de Teste](docs/test-cases.md) - 31 casos de teste documentados com passos e resultados esperados
-- [Bug Reports](docs/bug-reports.md) - 4 bugs identificados na API (validação, status codes, persistência)
+- [Bug Reports](docs/bug-reports.md) - 7 bugs identificados na API (validação, status codes, persistência, paginação)
