@@ -1,6 +1,11 @@
-const getHeaders = () => ({
-  'x-api-key': Cypress.env('API_KEY'),
-})
+const getHeaders = () => {
+  const headers = {}
+  const apiKey = Cypress.env('API_KEY')
+  if (apiKey) {
+    headers['x-api-key'] = apiKey
+  }
+  return headers
+}
 
 Cypress.Commands.add('apiGet', (url, options = {}) => {
   return cy.request({
