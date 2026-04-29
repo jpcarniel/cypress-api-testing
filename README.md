@@ -23,6 +23,11 @@ Automação de testes de API para o [ReqRes.in](https://reqres.in) usando Cypres
 # instalar dependências
 npm install
 
+# configurar a API key (copie o exemplo e preencha com a sua)
+cp cypress.env.example cypress.env.json
+# edite cypress.env.json com sua chave ReqRes
+# ou exporte REQRES_API_KEY no ambiente (usado no CI)
+
 # rodar todos os testes (headless)
 npm test
 
